@@ -10,8 +10,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
- * Created by 王国晟 on 2017/4/17.
+ * Created by HIT 王国晟 on 2017/4/17.
  */
+
 public class Game1 extends View{
     int box[][],height[];
     int oneBoxSize = 50;
@@ -25,7 +26,7 @@ public class Game1 extends View{
         rectF = new RectF();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         oneBoxSize = dm.widthPixels/7;
-        box = new int[8][8];
+        box = new int[8][7];
         height = new int[9];
     }
     private enum state{
@@ -33,7 +34,7 @@ public class Game1 extends View{
         OVER
     }
     public boolean pawnDown(int row,int gamer){
-        if(height[row] >= 7 || currentState == state.OVER){
+        if(height[row] >= 6 || currentState == state.OVER){
             return false;
         }
         height[row]++;
@@ -58,25 +59,25 @@ public class Game1 extends View{
 
         //第二次
         testA = testB = 0;
-        for(int j = line;j < 8 && box[row][j] == pawn;j++){testA++;}
+        for(int j = line;j < 7 && box[row][j] == pawn;j++){testA++;}
         for (int j = line;j > 0 && box[row][j] == pawn;j--){testB++;}
         if(testA + testB >= 5){return true;}
 
         //第三次
         testA = testB = 0;
-        for(int i = row,j = line;i < 8 && j < 8 && box[i][j] == pawn;i++,j++){testA++;}
+        for(int i = row,j = line;i < 8 && j < 7 && box[i][j] == pawn;i++,j++){testA++;}
         for(int i = row,j = line;i > 0 && j > 0 && box[i][j] == pawn;i--,j--){testB++;}
         if(testA + testB >= 5){return true;}
 
         //第四次
         testA = testB = 0;
         for(int i = row,j = line;i < 8 && j > 0 && box[i][j] == pawn;i++,j--){testA++;}
-        for(int i = row,j = line;i > 0 && j < 8 && box[i][j] == pawn;i--,j++){testB++;}
+        for(int i = row,j = line;i > 0 && j < 7 && box[i][j] == pawn;i--,j++){testB++;}
         return testA + testB >= 5;
     }
     public void restart(){
-        box = new int[8][8];
-        height = new int[8];
+        box = new int[8][7];
+        height = new int[7];
         currentState = state.START;
         invalidate();
     }
@@ -84,14 +85,14 @@ public class Game1 extends View{
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
         for (int i = 1; i < 8; i++) {
-            for (int j = 1; j < 8; j++) {
+            for (int j = 1; j < 7; j++) {
                 if (box[i][j] == 1) {
                     paint.setColor(Color.RED);
-                    rectF.set((i-1) * oneBoxSize, (7 - j) * oneBoxSize, i * oneBoxSize, (8 - j) * oneBoxSize);
+                    rectF.set((i-1) * oneBoxSize, (6 - j) * oneBoxSize, i * oneBoxSize, (7 - j) * oneBoxSize);
                     canvas.drawOval(rectF, paint);
                 } else if (box[i][j] == 2) {
                     paint.setColor(Color.BLUE);
-                    rectF.set((i-1) * oneBoxSize, (7 - j) * oneBoxSize, i * oneBoxSize, (8 - j) * oneBoxSize);
+                    rectF.set((i-1) * oneBoxSize, (6 - j) * oneBoxSize, i * oneBoxSize, (7 - j) * oneBoxSize);
                     canvas.drawOval(rectF, paint);
                 }
             }
