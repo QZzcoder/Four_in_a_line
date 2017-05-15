@@ -27,7 +27,7 @@ public class Game1 extends View{
         DisplayMetrics dm = getResources().getDisplayMetrics();
         oneBoxSize = dm.widthPixels/7;
         box = new int[8][7];
-        height = new int[9];
+        height = new int[8];
     }
     private enum state{
         START,
@@ -77,7 +77,7 @@ public class Game1 extends View{
     }
     public void restart(){
         box = new int[8][7];
-        height = new int[7];
+        height = new int[8];
         currentState = state.START;
         invalidate();
     }
