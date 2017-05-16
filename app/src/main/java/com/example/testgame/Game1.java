@@ -14,9 +14,10 @@ import android.view.View;
  */
 
 public class Game1 extends View{
-    int box[][],height[];
-    int oneBoxSize = 50;
-    char winner;
+    private int box[][],height[];
+    private int oneBoxSize = 50;
+    private int times = 0;
+    private char winner;
     private state currentState = state.START;
     private Paint paint;
     private RectF rectF;
@@ -37,15 +38,29 @@ public class Game1 extends View{
         if(height[row] >= 6 || currentState == state.OVER){
             return false;
         }
+        times++;
         height[row]++;
         box[row][height[row]] = gamer;
         if(testWin(row)){
             currentState = state.OVER;
             winner = gamer == 1 ? '红':'蓝';
         }
+        if(testFull()){
+            currentState = state.OVER;
+            winner = '0';
+        }
         invalidate();
         return true;
     }
+
+    public int[][] getBox(){
+        return box;
+    }
+
+    private boolean testFull(){
+        return times >= 42?true:false;
+    }
+
     private boolean testWin(int row){
         int line = height[row];
         int pawn = box[row][line];
@@ -79,8 +94,10 @@ public class Game1 extends View{
         box = new int[8][7];
         height = new int[8];
         currentState = state.START;
+        times = 0;
         invalidate();
     }
+
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -100,7 +117,8 @@ public class Game1 extends View{
         if(currentState == state.OVER){
             paint.setTextSize(50);
             paint.setColor(Color.BLACK);
-            canvas.drawText("游戏结束 "+winner+"方获胜",50,100,paint);
+            if(winner == '0'){canvas.drawText("游戏结束 平局",50,100,paint);}
+            else{canvas.drawText("游戏结束 "+winner+"方获胜",50,100,paint);}
         }
     }
 }
