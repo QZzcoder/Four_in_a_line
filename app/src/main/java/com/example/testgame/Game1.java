@@ -15,7 +15,7 @@ import android.view.View;
 
 public class Game1 extends View{
     private int box[][],height[];
-    private int oneBoxSize = 50;
+    private int oneBoxSize;
     private int times = 0;
     private char winner;
     private state currentState = state.START;
@@ -98,6 +98,28 @@ public class Game1 extends View{
         invalidate();
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = this.getMeasuredSize(widthMeasureSpec, true);
+        int height = this.getMeasuredSize(heightMeasureSpec, false);
+        setMeasuredDimension(width, height);
+    }
+    private int getMeasuredSize(int length, boolean isWidth){
+        // 模式
+        int specMode = MeasureSpec.getMode(length);
+        // 尺寸
+        int specSize = MeasureSpec.getSize(length);
+        // 计算所得的实际尺寸，要被返回
+        int retSize = 0;
+        // 对不同的指定模式进行判断
+        if(specMode==MeasureSpec.EXACTLY){  // 显式指定大小，如40dp或fill_parent
+            retSize = specSize;
+        }else{                              // 如使用wrap_content
+            retSize = oneBoxSize*6;
+        }
+
+        return retSize;
+    }
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
